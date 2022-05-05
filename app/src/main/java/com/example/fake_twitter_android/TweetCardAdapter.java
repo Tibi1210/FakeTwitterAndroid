@@ -143,7 +143,7 @@ public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.View
 
             username.setText(currentTweet.getUsername());
             tweet.setText(currentTweet.getTweet());
-            Glide.with(mContext).load(currentTweet.getPfp()).into(pfp);
+            //Glide.with(mContext).load(currentTweet.getPfp()).into(pfp);
 
 
             itemView.findViewById(R.id.twitterDeleteTweet).setOnClickListener(view -> ((HomePageActivity)mContext).deleteTweet(currentTweet));

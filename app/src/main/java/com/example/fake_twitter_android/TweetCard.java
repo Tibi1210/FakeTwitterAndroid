@@ -1,8 +1,5 @@
 package com.example.fake_twitter_android;
 
-
-import java.sql.Timestamp;
-
 import java.util.Date;
 
 public class TweetCard {

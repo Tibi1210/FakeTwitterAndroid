@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String LOG_TAG = SignUpActivity.class.getName();
@@ -26,6 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
     private static final String PREF_KEY = MainActivity.class.getPackage().toString();
 
     private FirebaseAuth mAuth;
+    private CollectionReference usersCollection;
+    private FirebaseFirestore mFirestore;
 
     EditText emailET;
     EditText usernameET;
@@ -60,6 +64,8 @@ public class SignUpActivity extends AppCompatActivity {
         passwordET.setText(savedPassword);
 
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
+        usersCollection = mFirestore.collection("Users");
 
     }
 
@@ -94,6 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
                         Log.i(LOG_TAG,"User created successfully!");
+                        usersCollection.add(new User(mAuth.getUid(),username,phone,gender));
                         startTwitter();
                     }else {
                         Log.e(LOG_TAG,"User creation failed!");

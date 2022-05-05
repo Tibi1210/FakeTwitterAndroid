@@ -82,11 +82,13 @@ public class HomePageActivity extends AppCompatActivity {
         postUsername = findViewById(R.id.TweetPostUsername);
         postUsername.setText(user.getEmail());
 
+
         postTweet = findViewById(R.id.TweetPostTweet);
         postPfp = findViewById(R.id.UserPfpTweetPost);
 
         mNotificationHandler = new NotificationHandler(this);
 
+        Log.i(LOG_TAG, user.getUid());
     }
 
     private void queryData() {
