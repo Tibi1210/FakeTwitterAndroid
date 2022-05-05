@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class TweetCard {
     private String id;
+    private String uid;
     private String username;
     private String tweet;
     private int pfp;
@@ -11,7 +12,12 @@ public class TweetCard {
     Date currentTime;
 
 
-    public TweetCard(String username, String tweet, int pfp, Date date) {
+    public String getUid() {
+        return uid;
+    }
+
+    public TweetCard(String uid, String username, String tweet, int pfp, Date date) {
+        this.uid = uid;
         this.username = username;
         this.tweet = tweet;
         this.pfp = pfp;

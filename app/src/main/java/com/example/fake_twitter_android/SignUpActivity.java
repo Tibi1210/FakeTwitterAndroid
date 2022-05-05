@@ -100,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
                         Log.i(LOG_TAG,"User created successfully!");
-                        usersCollection.add(new User(mAuth.getUid(),username,phone,gender));
+                        usersCollection.document(mAuth.getUid()).set(new User(mAuth.getUid(),username,phone,gender));
                         startTwitter();
                     }else {
                         Log.e(LOG_TAG,"User creation failed!");

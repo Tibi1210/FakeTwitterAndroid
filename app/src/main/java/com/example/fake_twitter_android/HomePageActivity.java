@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -44,6 +45,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     private FirebaseFirestore mFirestore;
     private CollectionReference tweetsCollection;
+    private CollectionReference userCollection;
+    private User userData;
 
     private NotificationHandler mNotificationHandler;
 
@@ -70,25 +73,36 @@ public class HomePageActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycleViewTweets);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         mItemList = new ArrayList<>();
-        mAdapter = new TweetCardAdapter(this, mItemList,user);
-        mRecyclerView.setAdapter(mAdapter);
+
 
         mFirestore = FirebaseFirestore.getInstance();
         tweetsCollection = mFirestore.collection("Tweets");
-
-        queryData();
-        //initData();
+        userCollection = mFirestore.collection("Users");
 
         postUsername = findViewById(R.id.TweetPostUsername);
-        postUsername.setText(user.getEmail());
-
+        userCollection.document(user.getUid()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    userData= new User(document.getData().get("id").toString(),document.getData().get("username").toString(),document.getData().get("phone").toString(),document.getData().get("gender").toString());
+                    Log.d(LOG_TAG, userData.getUsername());
+                    postUsername.setText(userData.getUsername());
+                    mAdapter = new TweetCardAdapter(this, mItemList,user,userData);
+                    mRecyclerView.setAdapter(mAdapter);
+                    queryData();
+                } else {
+                    Log.d(LOG_TAG, "No such document");
+                }
+            } else {
+                Log.d(LOG_TAG, "get failed with ", task.getException());
+            }
+        });
 
         postTweet = findViewById(R.id.TweetPostTweet);
         postPfp = findViewById(R.id.UserPfpTweetPost);
 
         mNotificationHandler = new NotificationHandler(this);
 
-        Log.i(LOG_TAG, user.getUid());
     }
 
     private void queryData() {
@@ -102,14 +116,6 @@ public class HomePageActivity extends AppCompatActivity {
                 mItemList.add(item);
             }
 
-            if (mItemList.size() == 0) {
-                try {
-                    initData();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                queryData();
-            }
             mAdapter.notifyDataSetChanged();
         });
 
@@ -123,23 +129,6 @@ public class HomePageActivity extends AppCompatActivity {
             Toast.makeText(this,"Delete Failed!",Toast.LENGTH_LONG).show();
         });
         queryData();
-    }
-
-    private void initData() throws InterruptedException {
-        String[] itemUsername = getResources().getStringArray(R.array.names);
-        String[] itemTweet = getResources().getStringArray(R.array.tweets);
-        TypedArray itemPfp = getResources().obtainTypedArray(R.array.images);
-
-        //mItemList.clear();
-
-        for (int i = 0; i < itemUsername.length; i++) {
-            tweetsCollection.add(new TweetCard(itemUsername[i], itemTweet[i], itemPfp.getResourceId(i, 0), new Timestamp(System.currentTimeMillis())));
-            sleep(5000);
-            //mItemList.add(new TweetCard(itemUsername[i], itemTweet[i], itemPfp.getResourceId(i, 0)));
-        }
-        itemPfp.recycle();
-        //mAdapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -195,7 +184,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void tweet(View view) {
         if (!(postTweet.getText().toString().equals(null) || postTweet.getText().toString().equals(""))) {
-            tweetsCollection.add(new TweetCard(postUsername.getText().toString(), postTweet.getText().toString(), 2131230854, new Timestamp(System.currentTimeMillis())));
+            tweetsCollection.add(new TweetCard(user.getUid(),postUsername.getText().toString(), postTweet.getText().toString(), 2131230854, new Timestamp(System.currentTimeMillis())));
             mNotificationHandler.send("Tweet sent!",postUsername.getText().toString()+" posted: "+postTweet.getText().toString());
             postTweet.setText("");
             queryData();

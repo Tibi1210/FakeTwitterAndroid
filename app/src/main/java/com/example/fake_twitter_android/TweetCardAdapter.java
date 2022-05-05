@@ -1,6 +1,7 @@
 package com.example.fake_twitter_android;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -25,8 +28,10 @@ import java.util.Locale;
 public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.ViewHolder> implements Filterable {
 
     Timestamp now = new Timestamp(System.currentTimeMillis());
+    private static final String LOG_TAG = TweetCardAdapter.class.getName();
 
     private FirebaseUser user;
+    private User userData;
 
     private ArrayList<TweetCard> mTweetCardListData;
     private ArrayList<TweetCard> mTweetCardListDataAll;
@@ -34,11 +39,12 @@ public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.View
     private int lastPosition = -1;
 
 
-    public TweetCardAdapter(Context context, ArrayList<TweetCard> itemsData,FirebaseUser userin) {
+    public TweetCardAdapter(Context context, ArrayList<TweetCard> itemsData,FirebaseUser userin, User userData) {
         this.mTweetCardListData = itemsData;
         this.mTweetCardListDataAll = itemsData;
         this.mContext = context;
         this.user=userin;
+        this.userData=userData;
     }
 
     @NonNull
@@ -118,6 +124,7 @@ public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.View
         }
 
         public void bindTo(TweetCard currentTweet) {
+
             int seconds = ((int) (now.getTime() - currentTweet.getCurrentTime().getTime())) / 1000;
             if (seconds<0){
                 seconds*=-1;
@@ -145,10 +152,9 @@ public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.View
             tweet.setText(currentTweet.getTweet());
             //Glide.with(mContext).load(currentTweet.getPfp()).into(pfp);
 
-
             itemView.findViewById(R.id.twitterDeleteTweet).setOnClickListener(view -> ((HomePageActivity)mContext).deleteTweet(currentTweet));
             itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.INVISIBLE);
-            if (username.getText().equals(user.getEmail())){
+            if (currentTweet.getUid().equals(userData.getId())){
                 itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.VISIBLE);
             }
         }
