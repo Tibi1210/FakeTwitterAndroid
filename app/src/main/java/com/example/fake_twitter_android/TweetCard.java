@@ -9,6 +9,10 @@ public class TweetCard {
     private String tweet;
     private int pfp;
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     Date currentTime;
 
 

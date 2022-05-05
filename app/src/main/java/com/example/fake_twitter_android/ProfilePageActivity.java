@@ -53,7 +53,9 @@ public class ProfilePageActivity extends AppCompatActivity {
 
     private TextView postUsername;
     private EditText postTweet;
-    private ImageView postPfp;
+    private EditText editUsername;
+
+    boolean editBool;
 
 
     @Override
@@ -72,19 +74,21 @@ public class ProfilePageActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         mItemList = new ArrayList<>();
 
+        editBool=false;
 
         mFirestore = FirebaseFirestore.getInstance();
         tweetsCollection = mFirestore.collection("Tweets");
         userCollection = mFirestore.collection("Users");
 
         postUsername = findViewById(R.id.TweetPostUsername);
+        editUsername = findViewById(R.id.TweetPostUsernameEdit);
         userCollection.document(user.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    userData= new User(document.getData().get("id").toString(),document.getData().get("username").toString(),document.getData().get("phone").toString(),document.getData().get("gender").toString());
+                    userData = new User(document.getData().get("id").toString(), document.getData().get("username").toString(), document.getData().get("phone").toString(), document.getData().get("gender").toString());
                     postUsername.setText(userData.getUsername());
-                    mAdapter = new TweetCardAdapter(this, mItemList,user,userData);
+                    mAdapter = new TweetCardAdapter(this, mItemList, user, userData);
                     mRecyclerView.setAdapter(mAdapter);
                     queryData();
                 }
@@ -92,7 +96,6 @@ public class ProfilePageActivity extends AppCompatActivity {
         });
 
         postTweet = findViewById(R.id.TweetPostTweet);
-        postPfp = findViewById(R.id.UserPfpTweetPost);
 
         mNotificationHandler = new NotificationHandler(this);
 
@@ -106,9 +109,9 @@ public class ProfilePageActivity extends AppCompatActivity {
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 TweetCard item = doc.toObject(TweetCard.class);
                 item.setId(doc.getId());
-                    if (item.getUid().equals(user.getUid())){
-                        mItemList.add(item);
-                    }
+                if (item.getUid().equals(user.getUid())) {
+                    mItemList.add(item);
+                }
             }
 
             mAdapter.notifyDataSetChanged();
@@ -120,7 +123,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         DocumentReference ref = tweetsCollection.document(tweet._getId());
         ref.delete().addOnSuccessListener(success -> {
         }).addOnFailureListener(failure -> {
-            Toast.makeText(this,"Delete Failed!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Delete Failed!", Toast.LENGTH_LONG).show();
         });
         queryData();
     }
@@ -182,11 +185,44 @@ public class ProfilePageActivity extends AppCompatActivity {
 
     public void tweet(View view) {
         if (!(postTweet.getText().toString().equals(null) || postTweet.getText().toString().equals(""))) {
-            tweetsCollection.add(new TweetCard(user.getUid(),postUsername.getText().toString(), postTweet.getText().toString(), 2131230854, new Timestamp(System.currentTimeMillis())));
-            mNotificationHandler.send("Tweet sent!",postUsername.getText().toString()+" posted: "+postTweet.getText().toString());
+            tweetsCollection.add(new TweetCard(user.getUid(), postUsername.getText().toString(), postTweet.getText().toString(), 2131230854, new Timestamp(System.currentTimeMillis())));
+            mNotificationHandler.send("Tweet sent!", postUsername.getText().toString() + " posted: " + postTweet.getText().toString());
             postTweet.setText("");
             queryData();
 
         }
+    }
+
+
+    public void edit(View view) {
+        if (editBool){
+            editUsername.setVisibility(View.INVISIBLE);
+            postUsername.setVisibility(View.VISIBLE);
+        }else {
+            editUsername.setText(postUsername.getText());
+            editUsername.setVisibility(View.VISIBLE);
+            postUsername.setVisibility(View.INVISIBLE);
+        }
+
+
+        if (editBool&&!editUsername.getText().toString().equals(postUsername.getText().toString())){
+            Log.i(LOG_TAG,"changed from: "+postUsername.getText()+" to: "+editUsername.getText());
+            userData.setUsername(editUsername.getText().toString());
+            userCollection.document(user.getUid()).set(userData);
+            postUsername.setText(userData.getUsername());
+
+            tweetsCollection.orderBy("currentTime", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                    TweetCard item = doc.toObject(TweetCard.class);
+                    item.setId(doc.getId());
+                    if (item.getUid().equals(user.getUid())) {
+                        item.setUsername(userData.getUsername());
+                        tweetsCollection.document(doc.getId()).set(item);
+                    }
+                }
+                queryData();
+            });
+        }
+        editBool=!editBool;
     }
 }

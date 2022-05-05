@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#000000"
     android:orientation="vertical"
-    tools:context=".HomePageActivity">
+    tools:context=".ProfilePageActivity">
 
 
     <RelativeLayout
@@ -32,7 +32,28 @@
             android:paddingTop="15dp"
             android:text="username"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="visible"/>
+        <EditText
+            android:id="@+id/TweetPostUsernameEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/UserPfpTweetPost"
+            android:paddingTop="15dp"
+            android:text="username"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="invisible"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/TweetPostTweet"
+            android:layout_alignRight="@id/TweetPostTweet"
+            android:onClick="edit"
+            android:text="Edit"
+            android:textAllCaps="false" />
 
         <EditText
             android:id="@+id/TweetPostTweet"

@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void login(View view) {
 
+
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     private void startTwitter() {
