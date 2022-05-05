@@ -152,11 +152,23 @@ public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.View
             tweet.setText(currentTweet.getTweet());
             //Glide.with(mContext).load(currentTweet.getPfp()).into(pfp);
 
-            itemView.findViewById(R.id.twitterDeleteTweet).setOnClickListener(view -> ((HomePageActivity)mContext).deleteTweet(currentTweet));
-            itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.INVISIBLE);
-            if (currentTweet.getUid().equals(userData.getId())){
-                itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.VISIBLE);
+            if (mContext.getClass()==HomePageActivity.class){
+                itemView.findViewById(R.id.twitterDeleteTweet).setOnClickListener(view -> ((HomePageActivity)mContext).deleteTweet(currentTweet));
+                itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.INVISIBLE);
+                if (currentTweet.getUid().equals(userData.getId())){
+                    itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.VISIBLE);
+                }
             }
+            if (mContext.getClass()==ProfilePageActivity.class){
+                itemView.findViewById(R.id.twitterDeleteTweet).setOnClickListener(view -> ((ProfilePageActivity)mContext).deleteTweet(currentTweet));
+                itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.INVISIBLE);
+                if (currentTweet.getUid().equals(userData.getId())){
+                    itemView.findViewById(R.id.twitterDeleteTweet).setVisibility(View.VISIBLE);
+                }
+            }
+
+
+
         }
     }
 }

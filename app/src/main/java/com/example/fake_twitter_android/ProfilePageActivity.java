@@ -34,9 +34,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-public class HomePageActivity extends AppCompatActivity {
+public class ProfilePageActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = HomePageActivity.class.getName();
+    private static final String LOG_TAG = ProfilePageActivity.class.getName();
 
     private FirebaseUser user;
 
@@ -60,8 +60,8 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //getSupportActionBar().hide();
-        getSupportActionBar().setTitle("Home");
-        setContentView(R.layout.activity_home_page);
+        getSupportActionBar().setTitle("Profile");
+        setContentView(R.layout.activity_profile_page);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -114,7 +114,9 @@ public class HomePageActivity extends AppCompatActivity {
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 TweetCard item = doc.toObject(TweetCard.class);
                 item.setId(doc.getId());
-                mItemList.add(item);
+                    if (item.getUid().equals(user.getUid())){
+                        mItemList.add(item);
+                    }
             }
 
             mAdapter.notifyDataSetChanged();
