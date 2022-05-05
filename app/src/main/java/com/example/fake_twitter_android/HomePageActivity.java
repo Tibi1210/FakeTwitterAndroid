@@ -64,10 +64,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Log.i(LOG_TAG, "Authenticated user.");
-        } else {
-            Log.e(LOG_TAG, "Unauthenticated user.");
+        if (user == null) {
             finish();
         }
 
@@ -85,17 +82,12 @@ public class HomePageActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    userData= new User(document.getData().get("id").toString(),document.getData().get("username").toString(),document.getData().get("phone").toString(),document.getData().get("gender").toString());
-                    Log.d(LOG_TAG, userData.getUsername());
+                    userData = new User(document.getData().get("id").toString(), document.getData().get("username").toString(), document.getData().get("phone").toString(), document.getData().get("gender").toString());
                     postUsername.setText(userData.getUsername());
-                    mAdapter = new TweetCardAdapter(this, mItemList,user,userData);
+                    mAdapter = new TweetCardAdapter(this, mItemList, user, userData);
                     mRecyclerView.setAdapter(mAdapter);
                     queryData();
-                } else {
-                    Log.d(LOG_TAG, "No such document");
                 }
-            } else {
-                Log.d(LOG_TAG, "get failed with ", task.getException());
             }
         });
 
@@ -125,9 +117,8 @@ public class HomePageActivity extends AppCompatActivity {
     public void deleteTweet(TweetCard tweet) {
         DocumentReference ref = tweetsCollection.document(tweet._getId());
         ref.delete().addOnSuccessListener(success -> {
-            Log.i(LOG_TAG, "Deleted: " + tweet._getId());
         }).addOnFailureListener(failure -> {
-            Toast.makeText(this,"Delete Failed!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Delete Failed!", Toast.LENGTH_LONG).show();
         });
         queryData();
     }
@@ -162,19 +153,16 @@ public class HomePageActivity extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.top_menu_home:
-                Log.i(LOG_TAG, "HOME");
                 finish();
                 intent = new Intent(this, HomePageActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.top_menu_profile:
-                Log.i(LOG_TAG, "PROFILE");
                 finish();
                 intent = new Intent(this, ProfilePageActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.top_menu_logout:
-                Log.i(LOG_TAG, "LOGOUT");
                 FirebaseAuth.getInstance().signOut();
                 finish();
                 return true;
@@ -192,8 +180,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void tweet(View view) {
         if (!(postTweet.getText().toString().equals(null) || postTweet.getText().toString().equals(""))) {
-            tweetsCollection.add(new TweetCard(user.getUid(),postUsername.getText().toString(), postTweet.getText().toString(), 2131230854, new Timestamp(System.currentTimeMillis())));
-            mNotificationHandler.send("Tweet sent!",postUsername.getText().toString()+" posted: "+postTweet.getText().toString());
+            tweetsCollection.add(new TweetCard(user.getUid(), postUsername.getText().toString(), postTweet.getText().toString(), 2131230854, new Timestamp(System.currentTimeMillis())));
+            mNotificationHandler.send("Tweet sent!", postUsername.getText().toString() + " posted: " + postTweet.getText().toString());
             postTweet.setText("");
             queryData();
 

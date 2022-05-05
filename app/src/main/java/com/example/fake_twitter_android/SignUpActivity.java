@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    private void startTwitter(){
+    private void startTwitter() {
         Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
     }
@@ -93,30 +93,17 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         if (!password.equals(passwordConfirm)) {
-            Toast.makeText(this,"Passwords do not mach!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Passwords do not mach!", Toast.LENGTH_LONG).show();
         } else {
-            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        Log.i(LOG_TAG,"User created successfully!");
-                        usersCollection.document(mAuth.getUid()).set(new User(mAuth.getUid(),username,phone,gender));
+                    if (task.isSuccessful()) {
+                        usersCollection.document(mAuth.getUid()).set(new User(mAuth.getUid(), username, phone, gender));
                         startTwitter();
-                    }else {
-                        Log.e(LOG_TAG,"User creation failed!");
                     }
                 }
             });
-
-
-             /*
-            Log.i(LOG_TAG,"Email: "+email);
-            Log.i(LOG_TAG,"Username: "+username);
-            Log.i(LOG_TAG,"Password: "+password);
-            Log.i(LOG_TAG,"PasswordConfirm: "+passwordConfirm);
-            Log.i(LOG_TAG,"Phone Number: "+phone);
-            Log.i(LOG_TAG,"Gender: "+gender);
-             */
         }
 
     }

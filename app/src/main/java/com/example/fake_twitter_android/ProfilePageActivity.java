@@ -64,10 +64,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_page);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Log.i(LOG_TAG, "Authenticated user.");
-        } else {
-            Log.e(LOG_TAG, "Unauthenticated user.");
+        if (user == null) {
             finish();
         }
 
@@ -86,16 +83,11 @@ public class ProfilePageActivity extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     userData= new User(document.getData().get("id").toString(),document.getData().get("username").toString(),document.getData().get("phone").toString(),document.getData().get("gender").toString());
-                    Log.d(LOG_TAG, userData.getUsername());
                     postUsername.setText(userData.getUsername());
                     mAdapter = new TweetCardAdapter(this, mItemList,user,userData);
                     mRecyclerView.setAdapter(mAdapter);
                     queryData();
-                } else {
-                    Log.d(LOG_TAG, "No such document");
                 }
-            } else {
-                Log.d(LOG_TAG, "get failed with ", task.getException());
             }
         });
 
@@ -127,7 +119,6 @@ public class ProfilePageActivity extends AppCompatActivity {
     public void deleteTweet(TweetCard tweet) {
         DocumentReference ref = tweetsCollection.document(tweet._getId());
         ref.delete().addOnSuccessListener(success -> {
-            Log.i(LOG_TAG, "Deleted: " + tweet._getId());
         }).addOnFailureListener(failure -> {
             Toast.makeText(this,"Delete Failed!",Toast.LENGTH_LONG).show();
         });
@@ -164,19 +155,16 @@ public class ProfilePageActivity extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.top_menu_home:
-                Log.i(LOG_TAG, "HOME");
                 finish();
                 intent = new Intent(this, HomePageActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.top_menu_profile:
-                Log.i(LOG_TAG, "PROFILE");
                 finish();
                 intent = new Intent(this, ProfilePageActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.top_menu_logout:
-                Log.i(LOG_TAG, "LOGOUT");
                 FirebaseAuth.getInstance().signOut();
                 finish();
                 return true;

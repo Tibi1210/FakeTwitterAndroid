@@ -50,26 +50,17 @@ public class MainActivity extends AppCompatActivity {
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
 
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.i(LOG_TAG,"User login successfull!");
+                if (task.isSuccessful()) {
                     startTwitter();
-                }else {
-                    Log.e(LOG_TAG,"User login failed!");
                 }
             }
         });
-
-        /*
-        Log.i(LOG_TAG,"Email: "+email);
-        Log.i(LOG_TAG,"Password: "+password);
-        */
-
     }
 
-    private void startTwitter(){
+    private void startTwitter() {
         Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
     }
