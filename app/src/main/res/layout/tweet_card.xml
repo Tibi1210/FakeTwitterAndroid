@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:backgroundTint="#000000"
+    android:backgroundTintMode="add"
+    app:cardBackgroundColor="#000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/black"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/UserPfp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/kep"
+            />
+
+        <TextView
+            android:id="@+id/TweetCardUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/UserPfp"
+            android:paddingTop="15dp"
+            android:text="username"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TweetCardDate"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/TweetCardUsername"
+            android:paddingTop="15dp"
+            android:text="date"
+            android:textColor="#424242" />
+
+        <TextView
+            android:id="@+id/TweetCardTweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/UserPfp"
+            android:layout_alignLeft="@id/TweetCardUsername"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:text="tweet"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/twitterDeleteTweet"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignRight="@id/TweetCardTweet"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/delete" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top_border"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#424242" />
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical"
+    tools:context=".HomePageActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTweet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/UserPfpTweetPost"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/kep" />
+
+        <TextView
+            android:id="@+id/TweetPostUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/UserPfpTweetPost"
+            android:paddingTop="15dp"
+            android:text="username"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/TweetPostTweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/UserPfpTweetPost"
+            android:layout_alignLeft="@id/TweetPostUsername"
+            android:layout_marginTop="5dp"
+            android:gravity="start|top"
+            android:hint="What's happening..."
+            android:inputType="textMultiLine"
+            android:maxLength="120"
+            android:minHeight="48dp"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textColorHint="#424242" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TweetPostTweet"
+            android:layout_alignRight="@id/TweetPostTweet"
+            android:onClick="tweet"
+            android:text="Tweet"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_border"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#424242" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleViewTweets"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/black"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

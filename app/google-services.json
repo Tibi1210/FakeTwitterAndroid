@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "516360307898",
+    "project_id": "android-fake-twitter",
+    "storage_bucket": "android-fake-twitter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516360307898:android:741c1b5f2381ba53542e83",
+        "android_client_info": {
+          "package_name": "com.example.fake_twitter_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516360307898-lc2sp3u73anm7bg496pej44k7cbug4us.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fake_twitter_android",
+            "certificate_hash": "520118a38cd238a7c4da9a5bc0e4efaafd957215"
+          }
+        },
+        {
+          "client_id": "516360307898-iq8cm0t4h6qm06b0j18uqhq1u3nq8i9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnW7NQke5Eif4iISoK2iXAmYbTatAT2Mo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516360307898-iq8cm0t4h6qm06b0j18uqhq1u3nq8i9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

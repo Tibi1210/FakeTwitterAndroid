@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Fake_Twitter_android</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username">Username</string>
+    <string name="phone">Phone Number</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="gender">Gender</string>
+    <string name="login_with_google">Login with google</string>
+
+    <string-array name="names">
+        <item>Tibi</item>
+        <item>Jani</item>
+        <item>Robi</item>
+        <item>Jani</item>
+        <item>Jani</item>
+        <item>Jani</item>
+        <item>Robi</item>
+        <item>Jani</item>
+        <item>Tibi</item>
+        <item>Jani</item>
+    </string-array>
+
+    <string-array name="tweets">
+        <item>hello1</item>
+        <item>hello2</item>
+        <item>hello3</item>
+        <item>hello4</item>
+        <item>hello5</item>
+        <item>hello6</item>
+        <item>hello7</item>
+        <item>hello8</item>
+        <item>hello9</item>
+        <item>hello10</item>
+    </string-array>
+
+    <array name="images">
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+        <item>@drawable/kep</item>
+    </array>
+
+
+</resources>
