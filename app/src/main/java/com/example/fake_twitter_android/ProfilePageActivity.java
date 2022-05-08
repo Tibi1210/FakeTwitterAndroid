@@ -74,7 +74,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         mItemList = new ArrayList<>();
 
-        editBool=false;
+        editBool = false;
 
         mFirestore = FirebaseFirestore.getInstance();
         tweetsCollection = mFirestore.collection("Tweets");
@@ -105,13 +105,11 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         mItemList.clear();
 
-        tweetsCollection.orderBy("currentTime", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        tweetsCollection.whereEqualTo("uid", user.getUid()).orderBy("currentTime", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 TweetCard item = doc.toObject(TweetCard.class);
                 item.setId(doc.getId());
-                if (item.getUid().equals(user.getUid())) {
-                    mItemList.add(item);
-                }
+                mItemList.add(item);
             }
 
             mAdapter.notifyDataSetChanged();
@@ -195,18 +193,18 @@ public class ProfilePageActivity extends AppCompatActivity {
 
 
     public void edit(View view) {
-        if (editBool){
+        if (editBool) {
             editUsername.setVisibility(View.INVISIBLE);
             postUsername.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             editUsername.setText(postUsername.getText());
             editUsername.setVisibility(View.VISIBLE);
             postUsername.setVisibility(View.INVISIBLE);
         }
 
 
-        if (editBool&&!editUsername.getText().toString().equals(postUsername.getText().toString())){
-            Log.i(LOG_TAG,"changed from: "+postUsername.getText()+" to: "+editUsername.getText());
+        if (editBool && !editUsername.getText().toString().equals(postUsername.getText().toString())) {
+            Log.i(LOG_TAG, "changed from: " + postUsername.getText() + " to: " + editUsername.getText());
             userData.setUsername(editUsername.getText().toString());
             userCollection.document(user.getUid()).set(userData);
             postUsername.setText(userData.getUsername());
@@ -223,6 +221,6 @@ public class ProfilePageActivity extends AppCompatActivity {
                 queryData();
             });
         }
-        editBool=!editBool;
+        editBool = !editBool;
     }
 }
