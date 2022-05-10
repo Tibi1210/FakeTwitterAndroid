@@ -144,7 +144,7 @@ public class TweetCardAdapter extends RecyclerView.Adapter<TweetCardAdapter.View
             if (hours>=1){
                 date.setText(String.valueOf(hours)+"h");
             }
-            if (hours>168){
+            if (hours>72){
                 date.setText(simpleDateFormat.format(currentTweet.getCurrentTime()));
             }
 
